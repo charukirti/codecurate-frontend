@@ -1,6 +1,7 @@
 import { env } from '@/config/env';
 import axios, { AxiosError } from 'axios';
 
+// Axios instance with base URL and default headers
 export const api = axios.create({
   baseURL: env.VITE_API_URL,
   headers: {
@@ -13,6 +14,7 @@ let accessToken: string | null;
 export const setAccessToken = (token: string) => (accessToken = token);
 export const clearAccessToken = () => (accessToken = null);
 
+// Attach access token
 api.interceptors.request.use((config) => {
   if (accessToken) {
     config.headers['Authorization'] = `Bearer ${accessToken}`;
@@ -29,9 +31,9 @@ api.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        const respone = await api.post('/auth/refresh-token');
+        const response = await api.post('/auth/refresh-token');
 
-        const newToken = respone.data.accessToken;
+        const newToken = response.data.accessToken;
         setAccessToken(newToken);
         return api(originalRequest!);
       } catch {
