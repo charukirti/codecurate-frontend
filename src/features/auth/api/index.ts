@@ -1,20 +1,21 @@
 import type { SignInInput, SignUpInput } from '@/features/auth/schemas/auth.schema';
+import type { ApiResponse, SignInResponse, User } from '@/features/auth/types';
 import { api } from '@/lib/axios';
 
 export async function signIn(data: SignInInput) {
   const { email, password } = data;
 
-  const response = await api.post('/auth/signin', {
+  const response = await api.post<SignInResponse>('/auth/signin', {
     email,
     password,
   });
 
-  return response.data.data;
+  return response.data;
 }
 
 export async function signUp(data: SignUpInput) {
-  const response = await api.post('/auth/signup', data);
-  return response.data.data;
+  const response = await api.post<ApiResponse<User>>('/auth/signup', data);
+  return response.data;
 }
 
 export async function signOut() {
@@ -22,13 +23,15 @@ export async function signOut() {
 }
 
 export async function forgotPassword(email: string) {
-  await api.post('/auth/forgot-password', { email });
+  const response = await api.post<ApiResponse<void>>('/auth/forgot-password', { email });
+  return response.data;
 }
 
 export async function resetPassword(newPassword: string, token: string) {
-  await api.post(`/auth/reset-password?token=${token}`, { newPassword });
+  const response = await api.post<ApiResponse<void>>(`/auth/reset-password?token=${token}`, { newPassword });
+  return response.data;
 }
 
 export async function verifyEmail(token: string) {
-  await api.get(`/auth/verify-email?token=${token}`);
+  await api.get<ApiResponse<void>>(`/auth/verify-email?token=${token}`);
 }
