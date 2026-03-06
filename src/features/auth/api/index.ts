@@ -35,3 +35,13 @@ export async function resetPassword(newPassword: string, token: string) {
 export async function verifyEmail(token: string) {
   await api.get<ApiResponse<void>>(`/auth/verify-email?token=${token}`);
 }
+
+export async function getUser() {
+  const response = await api.get<ApiResponse<User>>('/users/me');
+  return response.data;
+}
+
+export async function rotateToken() {
+  const response = await api.post<{ accessToken: string; message: string }>('/auth/refresh-token');
+  return response.data;
+}

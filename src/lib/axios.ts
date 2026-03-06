@@ -4,6 +4,7 @@ import axios, { AxiosError } from 'axios';
 // Axios instance with base URL and default headers
 export const api = axios.create({
   baseURL: env.VITE_API_URL,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -13,7 +14,7 @@ let accessToken: string | null;
 
 export const setAccessToken = (token: string) => (accessToken = token);
 export const clearAccessToken = () => (accessToken = null);
-
+export const getAccessToken = () => accessToken;
 // Attach access token
 api.interceptors.request.use((config) => {
   if (accessToken) {
@@ -38,8 +39,8 @@ api.interceptors.response.use(
         return api(originalRequest!);
       } catch {
         clearAccessToken();
+        return Promise.reject(error);
       }
     }
-    return Promise.reject(error);
   },
 );

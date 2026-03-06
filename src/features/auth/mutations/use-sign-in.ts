@@ -13,7 +13,10 @@ export function useSignInMutation() {
     mutationFn: (data: SignInInput) => signIn(data),
     onSuccess: (data) => {
       setAccessToken(data.accessToken);
-      queryClient.invalidateQueries({ queryKey: authKeys.currentUser() });
+      queryClient.setQueryData(authKeys.currentUser(), {
+        message: data.message,
+        data: data.data,
+      });
       const successMessage = data.message || 'Sign in successful!';
       toast.success(successMessage);
     },
