@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signInSchema, type SignInInput } from '@/features/auth/schemas/auth.schema';
-import { useNavigate } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { useSignInMutation } from '@/features/auth/mutations/use-sign-in';
 
 export function SignInForm() {
@@ -53,6 +53,7 @@ export function SignInForm() {
 
           <Field>
             <FieldLabel htmlFor="password">Password</FieldLabel>
+
             <Input
               id="password"
               placeholder="••••••••"
@@ -60,6 +61,9 @@ export function SignInForm() {
               type="password"
               {...register('password')}
             />
+            <Link to="/auth/forgot-password" className="text-xs text-neutral-400 hover:text-neutral-200 text-right">
+              Forgot password?
+            </Link>
             {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
           </Field>
           <Button type="submit" className="w-full" disabled={isSubmitting} variant={'default'}>
@@ -71,9 +75,9 @@ export function SignInForm() {
       <CardFooter className="justify-center p-6 pt-0">
         <p className="text-sm text-neutral-500">
           Don't have an account?{' '}
-          <a href="/sign-up" className="text-neutral-200 underline underline-offset-4 hover:text-white">
+          <Link to="/auth/sign-up" className="text-neutral-200 underline underline-offset-4 hover:text-white">
             Sign up
-          </a>
+          </Link>
         </p>
       </CardFooter>
     </Card>
