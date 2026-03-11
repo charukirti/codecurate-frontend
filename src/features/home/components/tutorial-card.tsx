@@ -13,7 +13,7 @@ export function TutorialCard({ resource }: TutorialCardProps) {
   const rating = parseFloat(resource.avgRating);
 
   return (
-    <Link to="/" className="block group">
+    <Link to="/resources/$id" params={{ id: resource.id }} className="block group">
       <Card className="bg-neutral-900 border-neutral-800 hover:border-neutral-600 transition-all duration-200 overflow-hidden h-full">
         <CardHeader className="p-0 relative">
           <div className="relative aspect-video bg-neutral-800 overflow-hidden">
