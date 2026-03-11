@@ -29,7 +29,7 @@ export function ResourceFilters() {
   }
 
   function clearFilters() {
-    navigate({ search: { page: 1 } });
+    navigate({ search: { page: 1, limit: 6 } });
   }
 
   const hasFilters = !!type || !!codeLang;
