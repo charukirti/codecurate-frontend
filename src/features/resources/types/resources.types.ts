@@ -44,3 +44,8 @@ export type ResourcesResponse = {
     totalItems: number;
   };
 };
+
+export type ResourceResponse = {
+  message: string;
+  data: Resource;
+};
