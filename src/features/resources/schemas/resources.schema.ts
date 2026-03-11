@@ -1,6 +1,6 @@
 import z from 'zod';
 
-export const resourcesQuerySchema = z.object({
+export const resourcesSearchSchema = z.object({
   search: z.string().optional(),
   codeLang: z
     .enum([
@@ -22,18 +22,7 @@ export const resourcesQuerySchema = z.object({
     .optional(),
   topic: z.string().optional(),
   type: z.enum(['video', 'playlist']).optional(),
-  page: z
-    .string()
-    .transform((val) => parseInt(val, 10))
-    .pipe(z.number().min(1))
-    .optional()
-    .default(1),
-  limit: z
-    .string()
-    .transform((val) => parseInt(val, 10))
-    .pipe(z.number().min(1).max(100))
-    .optional()
-    .default(10),
+  page: z.number().min(1).default(1),
 });
 
-export type GetResourcesQuery = z.infer<typeof resourcesQuerySchema>;
+export type ResourcesSearch = z.infer<typeof resourcesSearchSchema>;

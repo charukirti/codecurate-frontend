@@ -33,8 +33,9 @@ export function Hero() {
 
         <div className="flex items-center justify-center gap-4">
           <Link
-            to="/resources/resources"
+            to="/resources"
             className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg transition-colors text-sm"
+            search={{ page: 1 }}
           >
             Browse Tutorials
           </Link>
