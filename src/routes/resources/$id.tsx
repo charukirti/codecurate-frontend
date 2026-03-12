@@ -1,3 +1,4 @@
+import { RelatedResources } from '@/features/resources/components/related-resources';
 import { ResourceHero } from '@/features/resources/components/resource-hero';
 import { ResourcePageSkeleton } from '@/features/resources/components/resource-page-skeleton';
 import { useGetResource } from '@/features/resources/queries/use-get-resource';
@@ -21,8 +22,14 @@ function RouteComponent() {
   }
   return (
     <main className="container mx-auto px-4 py-8">
-      resources
       <ResourceHero resource={resource} />
+      <section className="flex flex-col lg:flex-row gap-8">
+        <div className="flex-1">{/* review list */}</div>
+        <div className="w-full lg:w-80 shrink-0">
+          <h2 className="text-lg font-semibold text-neutral-100 mb-4">Related Tutorials</h2>
+          <RelatedResources id={id} />
+        </div>
+      </section>
     </main>
   );
 }
