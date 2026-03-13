@@ -4,12 +4,16 @@ import { Star } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useGetReviews } from '@/features/reviews/queries/use-get-reviews';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { WriteReview } from '@/features/reviews/components/write-review';
+import { useState } from 'react';
 
 interface ReviewsListProps {
   resourceId: string;
 }
 
 export function ReviewsList({ resourceId }: ReviewsListProps) {
+  const [open, setIsOpen] = useState(false);
   const { data: currentUser } = useGetCurrentUser();
   const { data, isLoading } = useGetReviews(resourceId, { page: 1, limit: 10, sort: 'newest' });
   const reviews = data?.data.reviews ?? [];
@@ -35,9 +39,23 @@ export function ReviewsList({ resourceId }: ReviewsListProps) {
           <span className="text-neutral-500 font-normal text-sm">({data?.data.pagination.totalItems ?? 0})</span>
         </h2>
         {currentUser?.data && (
-          <Button size="sm" className=" text-white text-xs">
-            Write a Review
-          </Button>
+          <Dialog open={open} onOpenChange={setIsOpen}>
+            <DialogTrigger
+              render={
+                <Button variant={'outline'} size="sm" className=" text-white text-xs">
+                  Write a Review
+                </Button>
+              }
+            />
+
+            <DialogContent className="bg-neutral-900 border-neutral-800 max-w-lg">
+              <DialogHeader>
+                <DialogTitle className="text-neutral-100">Write a Review</DialogTitle>
+              </DialogHeader>
+
+              <WriteReview resourceId={resourceId} onSuccess={() => setIsOpen(false)} />
+            </DialogContent>
+          </Dialog>
         )}
       </div>
 
