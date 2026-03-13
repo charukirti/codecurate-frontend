@@ -34,3 +34,8 @@ export type ReviewsResponse = {
     };
   };
 };
+
+export type TagsResponse = {
+  message: string;
+  data: Tags[];
+};

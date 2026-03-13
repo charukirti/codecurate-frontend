@@ -1,5 +1,5 @@
-import type { ReviewsQueryInput } from '@/features/reviews/schemas/reviews.schema';
-import type { ReviewsResponse } from '@/features/reviews/types/reviews.types';
+import type { CreateReviewInput, ReviewsQueryInput } from '@/features/reviews/schemas/reviews.schema';
+import type { ReviewsResponse, TagsResponse } from '@/features/reviews/types/reviews.types';
 import { api } from '@/lib/axios';
 
 export async function getAllReviews(id: string, params: ReviewsQueryInput) {
@@ -10,6 +10,22 @@ export async function getAllReviews(id: string, params: ReviewsQueryInput) {
       limit,
       sort,
     },
+  });
+
+  return response.data;
+}
+
+export async function getAllTags() {
+  const response = await api.get<TagsResponse>(`/reviews/tags`);
+  return response.data;
+}
+
+export async function createReview(id: string, data: CreateReviewInput) {
+  const { rating, reviewText, tagIds } = data;
+  const response = await api.post(`resources/${id}/reviews`, {
+    rating,
+    reviewText,
+    tagIds,
   });
 
   return response.data;
