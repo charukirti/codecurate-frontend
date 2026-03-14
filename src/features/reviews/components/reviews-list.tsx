@@ -7,6 +7,8 @@ import { useGetReviews } from '@/features/reviews/queries/use-get-reviews';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { WriteReview } from '@/features/reviews/components/write-review';
 import { useState } from 'react';
+import type { SortType } from '@/features/reviews/schemas/reviews.schema';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface ReviewsListProps {
   resourceId: string;
@@ -14,8 +16,9 @@ interface ReviewsListProps {
 
 export function ReviewsList({ resourceId }: ReviewsListProps) {
   const [open, setIsOpen] = useState(false);
+  const [sort, setSort] = useState<SortType>('newest');
   const { data: currentUser } = useGetCurrentUser();
-  const { data, isLoading } = useGetReviews(resourceId, { page: 1, limit: 10, sort: 'newest' });
+  const { data, isLoading } = useGetReviews(resourceId, { page: 1, limit: 10, sort });
   const reviews = data?.data.reviews ?? [];
 
   if (isLoading)
@@ -34,10 +37,32 @@ export function ReviewsList({ resourceId }: ReviewsListProps) {
   return (
     <section className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-neutral-100">
-          Reviews{' '}
-          <span className="text-neutral-500 font-normal text-sm">({data?.data.pagination.totalItems ?? 0})</span>
-        </h2>
+        <div className="flex items-center gap-5">
+          <h2 className="text-lg font-semibold text-neutral-100">
+            Reviews{' '}
+            <span className="text-neutral-500 font-normal text-sm">({data?.data.pagination.totalItems ?? 0})</span>
+          </h2>
+
+          <Select value={sort} onValueChange={(val) => setSort(val as SortType)}>
+            <SelectTrigger className="w-36 bg-neutral-900 border-neutral-800 text-neutral-400 text-xs font-mono">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="bg-neutral-900 border-neutral-800 text-neutral-300">
+              <SelectItem value="newest" className="text-xs  font-mono">
+                Newest
+              </SelectItem>
+              <SelectItem value="oldest" className="text-xs font-mono">
+                Oldest
+              </SelectItem>
+              <SelectItem value="highest" className="text-xs font-mono">
+                Highest Rated
+              </SelectItem>
+              <SelectItem value="lowest" className="text-xs font-mono">
+                Lowest Rated
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
         {currentUser?.data && (
           <Dialog open={open} onOpenChange={setIsOpen}>
             <DialogTrigger
