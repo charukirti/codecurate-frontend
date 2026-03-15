@@ -9,7 +9,11 @@ export function FeaturedTutorials() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-lg font-semibold text-neutral-400">Featured Tutorials</h2>
-          <Link to="/resources" className="text-sm text-blue-400 hover:text-blue-300 transition-colors">
+          <Link
+            to="/resources"
+            search={{ page: 1, limit: 10 }}
+            className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+          >
             View All --&gt;
           </Link>
         </div>

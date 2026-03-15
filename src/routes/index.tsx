@@ -10,7 +10,7 @@ export const Route = createFileRoute('/')({
   beforeLoad: async ({ context }) => {
     try {
       const user = await context.queryClient.ensureQueryData(currentUserQueryOptions());
-      if (user) throw redirect({ to: '/resources' });
+      if (user) throw redirect({ to: '/resources', search: { page: 1, limit: 10 } });
     } catch (error) {
       if (isRedirect(error)) throw error;
     }

@@ -18,7 +18,11 @@ export function Footer() {
             <Link to="/" className="text-sm text-neutral-400 hover:text-neutral-200 transition-colors w-fit">
               Home
             </Link>
-            <Link to="/resources" className="text-sm text-neutral-400 hover:text-neutral-200 transition-colors w-fit">
+            <Link
+              to="/resources"
+              search={{ page: 1, limit: 10 }}
+              className="text-sm text-neutral-400 hover:text-neutral-200 transition-colors w-fit"
+            >
               Browse Tutorials
             </Link>
             <Link
