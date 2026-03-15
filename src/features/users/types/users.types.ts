@@ -9,3 +9,44 @@ export type publicProfileResponse = {
   message: string;
   data: PublicProfile;
 };
+
+export type Review = {
+  id: string;
+  createdAt: Date | null;
+  updatedAt: Date | null;
+  userId: string;
+  resourceId: string;
+  rating: number;
+  reviewText: string | null;
+  reviewLikeCount: number | null;
+  reviewTags: {
+    reviewId: string;
+    tagId: string;
+    tag: {
+      id: string;
+      name: string;
+      createdAt: Date;
+      displayName: string;
+    };
+  }[];
+  resource: {
+    id: string;
+    type: 'video' | 'playlist';
+    title: string;
+    thumbnails: unknown;
+    avgRating: string;
+  };
+};
+
+export type UserReviewsResponse = {
+  message: string;
+  data: {
+    reviews: Review[];
+    pagination: {
+      page: number;
+      limit: number;
+      totalItems: number;
+      totalPages: number;
+    };
+  };
+};
