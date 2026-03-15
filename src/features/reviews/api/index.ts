@@ -30,3 +30,8 @@ export async function createReview(id: string, data: CreateReviewInput) {
 
   return response.data;
 }
+
+export async function deleteReview(resourceId: string, reviewId: string) {
+  const response = await api.delete(`resources/${resourceId}/reviews/${reviewId}`);
+  return response.data;
+}

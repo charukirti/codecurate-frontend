@@ -1,6 +1,6 @@
 import { useGetCurrentUser } from '@/features/auth/queries/useGetCurrentUser';
 
-import { Star } from 'lucide-react';
+import { Star, Trash2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useGetReviews } from '@/features/reviews/queries/use-get-reviews';
@@ -9,6 +9,7 @@ import { WriteReview } from '@/features/reviews/components/write-review';
 import { useState } from 'react';
 import type { SortType } from '@/features/reviews/schemas/reviews.schema';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useDeleteReview } from '@/features/reviews/mutations/use-delete-review';
 
 interface ReviewsListProps {
   resourceId: string;
@@ -19,6 +20,7 @@ export function ReviewsList({ resourceId }: ReviewsListProps) {
   const [sort, setSort] = useState<SortType>('newest');
   const { data: currentUser } = useGetCurrentUser();
   const { data, isLoading } = useGetReviews(resourceId, { page: 1, limit: 10, sort });
+  const { mutate: deleteReview, isPending } = useDeleteReview(resourceId);
   const reviews = data?.data.reviews ?? [];
 
   if (isLoading)
@@ -90,13 +92,26 @@ export function ReviewsList({ resourceId }: ReviewsListProps) {
         <div key={review.id} className="bg-neutral-900 border border-neutral-800 rounded-lg p-5 flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-neutral-200">@{review.user.username}</span>
-            <span className="text-xs text-neutral-500 font-mono">
-              {new Date(review.createdAt!).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-              })}
-            </span>
+            <div className="flex items-center gap-3">
+              {currentUser?.data?.id === review.userId && (
+                <Button
+                  className="text-xs text-red-500 hover:text-red-400 font-mono transition-colors"
+                  variant={'ghost'}
+                  size={'icon-lg'}
+                  onClick={() => deleteReview(review.id)}
+                  disabled={isPending}
+                >
+                  <Trash2 size={20} />
+                </Button>
+              )}
+              <span className="text-xs text-neutral-500 font-mono">
+                {new Date(review.createdAt!).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                })}
+              </span>
+            </div>
           </div>
 
           <div className="flex items-center gap-1">
