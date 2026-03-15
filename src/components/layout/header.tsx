@@ -66,7 +66,7 @@ export function Header({ variant }: HeaderProps) {
                   <DropdownMenuItem
                     className="hover:bg-neutral-800 "
                     render={
-                      <Link to="/" className="cursor-pointer">
+                      <Link to="/users/$username" params={{ username: data.data.username }} className="cursor-pointer">
                         Profile
                       </Link>
                     }
