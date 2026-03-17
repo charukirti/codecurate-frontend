@@ -1,3 +1,5 @@
+import type { Thumbnails } from '@/features/resources/types/resources.types';
+
 export type PublicProfile = {
   id: string;
   name: string;
@@ -33,7 +35,7 @@ export type Review = {
     id: string;
     type: 'video' | 'playlist';
     title: string;
-    thumbnails: unknown;
+    thumbnails: Thumbnails;
     avgRating: string;
   };
 };
