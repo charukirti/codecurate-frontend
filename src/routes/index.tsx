@@ -4,6 +4,7 @@ import { FeaturedTutorials } from '@/features/home/components/featured-tutorials
 import { Footer } from '@/features/home/components/footer';
 import { Hero } from '@/features/home/components/hero';
 import { HowItWorks } from '@/features/home/components/how-it-works';
+import { resourcesQueryOptions } from '@/features/resources/queries/query-options';
 import { createFileRoute, isRedirect, redirect } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/')({
@@ -15,6 +16,7 @@ export const Route = createFileRoute('/')({
       if (isRedirect(error)) throw error;
     }
   },
+  loader: ({ context }) => context.queryClient.ensureQueryData(resourcesQueryOptions({ page: 1, limit: 6 })),
   component: Home,
 });
 

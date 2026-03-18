@@ -1,12 +1,13 @@
 import { TutorialCard } from '@/features/home/components/tutorial-card';
 import { TutorialCardsSkeleton } from '@/features/resources/components/tutorial-cards-skeleton';
-import { useGetRelatedResources } from '@/features/resources/queries/use-get-related-resources';
+import { relatedResourcesQueryOptions } from '@/features/resources/queries/query-options';
+import { useQuery } from '@tanstack/react-query';
 
 interface RelatedResourceParams {
   id: string;
 }
 export function RelatedResources({ id }: RelatedResourceParams) {
-  const { data, isLoading } = useGetRelatedResources(id);
+  const { data, isLoading } = useQuery(relatedResourcesQueryOptions(id));
   if (isLoading) {
     return <TutorialCardsSkeleton count={4} />;
   }

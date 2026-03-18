@@ -1,26 +1,24 @@
 import { RelatedResources } from '@/features/resources/components/related-resources';
 import { ResourceHero } from '@/features/resources/components/resource-hero';
 import { ResourcePageSkeleton } from '@/features/resources/components/resource-page-skeleton';
-import { useGetResource } from '@/features/resources/queries/use-get-resource';
+import { resourceQueryOptions } from '@/features/resources/queries/query-options';
 import { ReviewsList } from '@/features/reviews/components/reviews-list';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute, useParams } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/resources/$id')({
+  loader: ({ context, params }) => context.queryClient.ensureQueryData(resourceQueryOptions(params.id)),
+  pendingComponent: ResourcePageSkeleton,
+  errorComponent: ({ error }) => <p className="text-destructive">{error.message}</p>,
   component: RouteComponent,
 });
 
 function RouteComponent() {
   const { id } = useParams({ from: '/resources/$id' });
-  const { data, isLoading } = useGetResource(id);
+  const { data } = useSuspenseQuery(resourceQueryOptions(id));
 
-  const resource = data?.data;
+  const resource = data.data;
 
-  if (isLoading) {
-    return <ResourcePageSkeleton />;
-  }
-  if (!resource) {
-    return <p className="text-destructive">Resource does not exist</p>;
-  }
   return (
     <main className="container mx-auto px-4 py-8">
       <ResourceHero resource={resource} />
