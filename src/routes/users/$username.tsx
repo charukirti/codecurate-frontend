@@ -1,22 +1,29 @@
 import { ProfileHero } from '@/features/users/components/profile-hero';
 import { ProfilePageSkeleton } from '@/features/users/components/profile-page-skeleton';
 import { UserReviews } from '@/features/users/components/user-reviews';
-import { useGetPublicProfile } from '@/features/users/queries/use-get-public-profile';
-import { useGetUserReviews } from '@/features/users/queries/use-get-user-reviews';
+import { getPublicProfileQueryOptions, getUserReviewsQueryOptions } from '@/features/users/queries/query-options';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute, useParams } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/users/$username')({
+  loader: ({ context, params }) =>
+    Promise.all([
+      context.queryClient.ensureQueryData(getPublicProfileQueryOptions(params.username)),
+      context.queryClient.ensureQueryData(getUserReviewsQueryOptions(params.username)),
+    ]),
+  pendingComponent: ProfilePageSkeleton,
+  errorComponent: () => <p className="text-destructive">Profile does not exist!</p>,
   component: RouteComponent,
 });
 
 function RouteComponent() {
   const { username } = useParams({ from: '/users/$username' });
-  const { data: profileData, isLoading: isProfileLoading } = useGetPublicProfile(username);
-  const { data: reviewsData, isLoading: isUsersReviewsLoading } = useGetUserReviews(username);
-  if (isProfileLoading || isUsersReviewsLoading) return <ProfilePageSkeleton />;
-  const profile = profileData?.data;
-  const reviews = reviewsData?.data;
-  if (!profile) return <p className="text-destructive">Profile does not exist!</p>;
+  const { data: profileData } = useSuspenseQuery(getPublicProfileQueryOptions(username));
+  const { data: reviewsData } = useSuspenseQuery(getUserReviewsQueryOptions(username));
+
+  const profile = profileData.data;
+  const reviews = reviewsData.data;
+
   if (!reviews) return <p className="text-destructive">Reviews does not exist. Write a review!</p>;
   return (
     <main className="container mx-auto px-4 py-8">
