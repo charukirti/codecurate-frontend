@@ -2,10 +2,10 @@ import { Header } from '@/components/layout/header';
 import { createFileRoute, Outlet } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/users')({
-  component: ResourcesLayout,
+  component: usersLayout,
 });
 
-function ResourcesLayout() {
+function usersLayout() {
   return (
     <div className="min-h-screen bg-neutral-950">
       <Header variant="rootLayout" />
