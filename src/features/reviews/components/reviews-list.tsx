@@ -3,13 +3,15 @@ import { useGetCurrentUser } from '@/features/auth/queries/useGetCurrentUser';
 import { Star, Trash2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { useGetReviews } from '@/features/reviews/queries/use-get-reviews';
+
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { WriteReview } from '@/features/reviews/components/write-review';
 import { useState } from 'react';
 import type { SortType } from '@/features/reviews/schemas/reviews.schema';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useDeleteReview } from '@/features/reviews/mutations/use-delete-review';
+import { useQuery } from '@tanstack/react-query';
+import { reviewsQueryOptions } from '@/features/reviews/queries/query-options';
 
 interface ReviewsListProps {
   resourceId: string;
@@ -19,7 +21,7 @@ export function ReviewsList({ resourceId }: ReviewsListProps) {
   const [open, setIsOpen] = useState(false);
   const [sort, setSort] = useState<SortType>('newest');
   const { data: currentUser } = useGetCurrentUser();
-  const { data, isLoading } = useGetReviews(resourceId, { page: 1, limit: 10, sort });
+  const { data, isLoading } = useQuery(reviewsQueryOptions(resourceId, { page: 1, limit: 10, sort: 'newest' }));
   const { mutate: deleteReview, isPending } = useDeleteReview(resourceId);
   const reviews = data?.data.reviews ?? [];
 
