@@ -1,6 +1,8 @@
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { resourceQueryOptions } from '@/features/resources/queries/query-options';
 import type { Resource } from '@/features/resources/types/resources.types';
 import { formatDuration, getThumbnailUrl } from '@/lib/utils';
+import { useQueryClient } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { Star } from 'lucide-react';
 
@@ -9,11 +11,16 @@ interface TutorialCardProps {
 }
 
 export function TutorialCard({ resource }: TutorialCardProps) {
+  const queryClient = useQueryClient();
   const thumb = getThumbnailUrl(resource.thumbnails);
   const rating = parseFloat(resource.avgRating);
 
+  function handleMouseEnter() {
+    queryClient.prefetchQuery(resourceQueryOptions(resource.id));
+  }
+
   return (
-    <Link to="/resources/$id" params={{ id: resource.id }} className="block group">
+    <Link to="/resources/$id" params={{ id: resource.id }} onMouseEnter={handleMouseEnter} className="block group">
       <Card className="bg-neutral-900 border-neutral-800 hover:border-neutral-600 transition-all duration-200 overflow-hidden h-full">
         <CardHeader className="p-0 relative">
           <div className="relative aspect-video bg-neutral-800 overflow-hidden">

@@ -9,7 +9,11 @@ import { createFileRoute, useParams } from '@tanstack/react-router';
 export const Route = createFileRoute('/resources/$id')({
   loader: ({ context, params }) => context.queryClient.ensureQueryData(resourceQueryOptions(params.id)),
   pendingComponent: ResourcePageSkeleton,
-  errorComponent: ({ error }) => <p className="text-destructive">{error.message}</p>,
+  errorComponent: ({ error }) => (
+    <main className="container mx-auto px-4 py-8">
+      <p className="text-destructive">{error.message}</p>
+    </main>
+  ),
   component: RouteComponent,
 });
 

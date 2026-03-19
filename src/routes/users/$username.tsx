@@ -12,7 +12,11 @@ export const Route = createFileRoute('/users/$username')({
       context.queryClient.ensureQueryData(getUserReviewsQueryOptions(params.username)),
     ]),
   pendingComponent: ProfilePageSkeleton,
-  errorComponent: () => <p className="text-destructive">Profile does not exist!</p>,
+  errorComponent: ({ error }) => (
+    <main className="container mx-auto px-4 py-8">
+      <p className="text-destructive">{error.message}</p>
+    </main>
+  ),
   component: RouteComponent,
 });
 

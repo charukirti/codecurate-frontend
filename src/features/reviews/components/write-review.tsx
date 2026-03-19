@@ -1,4 +1,3 @@
-import { useGetTags } from '@/features/reviews/queries/use-get-tags';
 import { createReviewSchema, type CreateReviewInput } from '@/features/reviews/schemas/reviews.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
@@ -6,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useCreateReview } from '@/features/reviews/mutations/use-create-review';
 import { Label } from '@/components/ui/label';
+import { useQuery } from '@tanstack/react-query';
+import { tagsQueryOptions } from '@/features/reviews/queries/query-options';
 
 interface WriteReviewProps {
   resourceId: string;
@@ -13,7 +14,7 @@ interface WriteReviewProps {
 }
 
 export function WriteReview({ resourceId, onSuccess }: WriteReviewProps) {
-  const { data: tagsData, isLoading: tagsLoading } = useGetTags();
+  const { data: tagsData, isLoading: tagsLoading } = useQuery(tagsQueryOptions());
   const { mutate, isPending } = useCreateReview(resourceId);
   const tags = tagsData?.data ?? [];
 

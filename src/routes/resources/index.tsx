@@ -17,7 +17,16 @@ export const Route = createFileRoute('/resources/')({
     type: search.type,
   }),
   loader: ({ context, deps }) => context.queryClient.ensureQueryData(resourcesQueryOptions(deps)),
-  pendingComponent: () => <TutorialCardsSkeleton count={6} />,
+  pendingComponent: () => (
+    <main className="container mx-auto px-4 py-8">
+      <TutorialCardsSkeleton count={6} />
+    </main>
+  ),
+  errorComponent: ({ error }) => (
+    <main className="container mx-auto px-4 py-8">
+      <p className="text-destructive">{error.message}</p>
+    </main>
+  ),
   component: ResourcesPage,
 });
 
