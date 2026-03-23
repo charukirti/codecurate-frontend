@@ -13,7 +13,7 @@ export function useCreateReview(resourceId: string) {
       queryClient.invalidateQueries({ queryKey: ['resources', resourceId] });
     },
     onError: (error: AxiosError<{ message: string }>) => {
-      const errorMessage = error.message || 'Failed to submit your review. Please try again.';
+      const errorMessage = error.response?.data.message || 'Failed to submit your review. Please try again.';
       toast.error(errorMessage);
     },
   });

@@ -13,7 +13,7 @@ export function useDeleteReview(resourceId: string) {
       toast.success('Review deleted!');
     },
     onError: (error: AxiosError<{ message: string }>) => {
-      const errorMessage = error.message || 'Failed to delete review. Please try again.';
+      const errorMessage = error.response?.data.message || 'Failed to delete review. Please try again.';
       toast.error(errorMessage);
     },
   });
