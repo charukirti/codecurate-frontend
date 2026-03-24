@@ -11,6 +11,7 @@ import {
 import { useSignOut } from '@/features/auth/mutations/use-sign-out';
 import { useGetCurrentUser } from '@/features/auth/queries/useGetCurrentUser';
 import { Link } from '@tanstack/react-router';
+import { User } from 'lucide-react';
 
 interface HeaderProps {
   variant?: 'rootLayout' | 'authLayout';
@@ -67,21 +68,11 @@ export function Header({ variant }: HeaderProps) {
                     className="hover:bg-neutral-800 "
                     render={
                       <Link to="/users/$username" params={{ username: data.data.username }} className="cursor-pointer">
-                        Profile
+                        <User /> Your Profile
                       </Link>
                     }
-                  ></DropdownMenuItem>
-                  <DropdownMenuItem className="hover:bg-neutral-800 ">
-                    <Link to="/" className="cursor-pointer">
-                      My Reviews
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="hover:bg-neutral-800 ">
-                    <Link to="/" className="cursor-pointer">
-                      My Replies
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator className="bg-neutral-800" />
+                  />
+
                   <DropdownMenuItem
                     className="text-red-400 hover:bg-neutral-800 hover:text-red-400 cursor-pointer"
                     variant="destructive"
