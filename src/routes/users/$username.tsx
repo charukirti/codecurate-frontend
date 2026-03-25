@@ -28,7 +28,6 @@ function RouteComponent() {
   const profile = profileData.data;
   const reviews = reviewsData.data;
 
-  if (!reviews) return <p className="text-destructive">Reviews does not exist. Write a review!</p>;
   return (
     <main className="container mx-auto px-4 py-8">
       <ProfileHero profile={profile} />
