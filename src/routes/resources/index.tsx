@@ -15,6 +15,7 @@ export const Route = createFileRoute('/resources/')({
     codeLang: search.codeLang,
     topic: search.topic,
     type: search.type,
+    search: search.search,
   }),
   loader: ({ context, deps }) => context.queryClient.ensureQueryData(resourcesQueryOptions(deps)),
   pendingComponent: () => (
@@ -31,8 +32,8 @@ export const Route = createFileRoute('/resources/')({
 });
 
 function ResourcesPage() {
-  const { topic, codeLang, type, page } = Route.useSearch();
-  const { data } = useSuspenseQuery(resourcesQueryOptions({ page, limit: 10, topic, codeLang, type }));
+  const { topic, codeLang, type, page, search } = Route.useSearch();
+  const { data } = useSuspenseQuery(resourcesQueryOptions({ page, limit: 10, topic, codeLang, type, search }));
   const resources = data.data ?? [];
   const pagination = data.pagination;
 
