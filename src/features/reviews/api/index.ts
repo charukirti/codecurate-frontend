@@ -35,3 +35,13 @@ export async function deleteReview(resourceId: string, reviewId: string) {
   const response = await api.delete(`resources/${resourceId}/reviews/${reviewId}`);
   return response.data;
 }
+
+export async function likeReview(resourceId: string, reviewId: string) {
+  const response = await api.post(`resources/${resourceId}/reviews/${reviewId}/like`);
+  return response.data;
+}
+
+export async function unlikeReview(resourceId: string, reviewId: string) {
+  const response = await api.delete(`resources/${resourceId}/reviews/${reviewId}/unlike`);
+  return response.data;
+}

@@ -21,6 +21,7 @@ export type Review = {
   reviewLikeCount: number | null;
   user: ReviewUser;
   tags: Tags[];
+  isLikedByCurrentUser: boolean;
 };
 
 export type ReviewsResponse = {

@@ -1,6 +1,6 @@
 import { useGetCurrentUser } from '@/features/auth/queries/useGetCurrentUser';
 
-import { Star, Trash2 } from 'lucide-react';
+import { Heart, Star, Trash2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useDeleteReview } from '@/features/reviews/mutations/use-delete-review';
 import { useQuery } from '@tanstack/react-query';
 import { reviewsQueryOptions } from '@/features/reviews/queries/query-options';
+import { useToggleReviewLike } from '@/features/reviews/mutations/use-toggle-review-like';
 
 interface ReviewsListProps {
   resourceId: string;
@@ -23,6 +24,11 @@ export function ReviewsList({ resourceId }: ReviewsListProps) {
   const { data: currentUser } = useGetCurrentUser();
   const { data, isLoading } = useQuery(reviewsQueryOptions(resourceId, { page: 1, limit: 10, sort: 'newest' }));
   const { mutate: deleteReview, isPending } = useDeleteReview(resourceId);
+  const { mutate: toggleLike, isPending: togglingLike } = useToggleReviewLike(resourceId, {
+    page: 1,
+    limit: 10,
+    sort: 'newest',
+  });
   const reviews = data?.data.reviews ?? [];
 
   if (isLoading)
@@ -141,6 +147,19 @@ export function ReviewsList({ resourceId }: ReviewsListProps) {
               ))}
             </div>
           )}
+
+          <div className="flex items-center justify-end">
+            <Button
+              variant="ghost"
+              size="icon-lg"
+              disabled={togglingLike || !currentUser?.data}
+              onClick={() => toggleLike({ id: review.id, isLikedByCurrentUser: review.isLikedByCurrentUser })}
+              className="flex items-center gap-1.5 text-xs font-mono text-neutral-400 hover:text-red-400 transition-colors"
+            >
+              <Heart size={16} className={review.isLikedByCurrentUser ? 'fill-red-500 text-red-500' : ''} />
+              <span>{review.reviewLikeCount ?? 0}</span>
+            </Button>
+          </div>
         </div>
       ))}
     </section>
