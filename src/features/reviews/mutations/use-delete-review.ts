@@ -9,7 +9,7 @@ export function useDeleteReview(resourceId: string) {
     mutationFn: (id: string) => deleteReview(resourceId, id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['resources', resourceId, 'reviews'] });
-      queryClient.invalidateQueries({ queryKey: ['resources', resourceId] });
+      queryClient.invalidateQueries({ queryKey: ['resource', resourceId] });
       toast.success('Review deleted!');
     },
     onError: (error: AxiosError<{ message: string }>) => {

@@ -10,7 +10,7 @@ export function useCreateReview(resourceId: string) {
     mutationFn: (data: CreateReviewInput) => createReview(resourceId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['resources', resourceId, 'reviews'] });
-      queryClient.invalidateQueries({ queryKey: ['resources', resourceId] });
+      queryClient.invalidateQueries({ queryKey: ['resource', resourceId] });
     },
     onError: (error: AxiosError<{ message: string }>) => {
       const errorMessage = error.response?.data.message || 'Failed to submit your review. Please try again.';
