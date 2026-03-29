@@ -22,12 +22,12 @@ export function ReviewsList({ resourceId }: ReviewsListProps) {
   const [open, setIsOpen] = useState(false);
   const [sort, setSort] = useState<SortType>('newest');
   const { data: currentUser } = useGetCurrentUser();
-  const { data, isLoading } = useQuery(reviewsQueryOptions(resourceId, { page: 1, limit: 10, sort: 'newest' }));
+  const { data, isLoading } = useQuery(reviewsQueryOptions(resourceId, { page: 1, limit: 10, sort }));
   const { mutate: deleteReview, isPending } = useDeleteReview(resourceId);
   const { mutate: toggleLike, isPending: togglingLike } = useToggleReviewLike(resourceId, {
     page: 1,
     limit: 10,
-    sort: 'newest',
+    sort,
   });
   const reviews = data?.data.reviews ?? [];
 
