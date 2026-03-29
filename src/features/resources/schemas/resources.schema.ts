@@ -23,7 +23,7 @@ export const resourcesSearchSchema = z.object({
   topic: z.string().optional(),
   type: z.enum(['video', 'playlist']).optional(),
   page: z.number().min(1).default(1),
-  limit: z.number().min(1).default(1),
+  limit: z.number().min(1).default(10),
 });
 
 export type ResourcesSearch = z.infer<typeof resourcesSearchSchema>;

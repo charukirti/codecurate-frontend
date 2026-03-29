@@ -16,7 +16,7 @@ export const Route = createFileRoute('/')({
       if (isRedirect(error)) throw error;
     }
   },
-  loader: ({ context }) => context.queryClient.ensureQueryData(resourcesQueryOptions({ page: 1, limit: 6 })),
+  loader: ({ context }) => context.queryClient.ensureQueryData(resourcesQueryOptions({ page: 1, limit: 10 })),
   component: Home,
 });
 
