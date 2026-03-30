@@ -1,18 +1,14 @@
 import { useGetCurrentUser } from '@/features/auth/queries/useGetCurrentUser';
-
-import { Heart, Star, Trash2 } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { WriteReview } from '@/features/reviews/components/write-review';
 import { useState } from 'react';
 import type { SortType } from '@/features/reviews/schemas/reviews.schema';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useDeleteReview } from '@/features/reviews/mutations/use-delete-review';
 import { useQuery } from '@tanstack/react-query';
 import { reviewsQueryOptions } from '@/features/reviews/queries/query-options';
 import { useToggleReviewLike } from '@/features/reviews/mutations/use-toggle-review-like';
+import { ReviewHeader } from '@/features/reviews/components/review-header';
+import { ReviewCard } from '@/features/reviews/components/review-card';
+import { EmptyReviews } from '@/features/reviews/components/empty-reviews';
+import { ReviewSkeleton } from '@/features/reviews/components/review-skeleton';
 
 interface ReviewsListProps {
   resourceId: string;
@@ -31,136 +27,32 @@ export function ReviewsList({ resourceId }: ReviewsListProps) {
   });
   const reviews = data?.data.reviews ?? [];
 
-  if (isLoading)
-    return (
-      <div className="flex flex-col gap-4 animate-pulse">
-        {[...Array(3)].map((_, i) => (
-          <div key={i} className="bg-neutral-900 border border-neutral-800 rounded-lg p-5 space-y-3">
-            <div className="h-4 bg-neutral-800 rounded w-1/4" />
-            <div className="h-4 bg-neutral-800 rounded w-full" />
-            <div className="h-4 bg-neutral-800 rounded w-2/3" />
-          </div>
-        ))}
-      </div>
-    );
+  if (isLoading) return <ReviewSkeleton count={3} />;
 
   return (
     <section className="flex flex-col gap-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-5">
-          <h2 className="text-lg font-semibold text-neutral-100">
-            Reviews{' '}
-            <span className="text-neutral-500 font-normal text-sm">({data?.data.pagination.totalItems ?? 0})</span>
-          </h2>
+      <ReviewHeader
+        resourceId={resourceId}
+        open={open}
+        setIsOpen={setIsOpen}
+        sort={sort}
+        setSort={setSort}
+        totalItems={data?.data.pagination.totalItems ?? 0}
+        isLoggedIn={!!currentUser?.data}
+      />
 
-          <Select value={sort} onValueChange={(val) => setSort(val as SortType)}>
-            <SelectTrigger className="w-36 bg-neutral-900 border-neutral-800 text-neutral-400 text-xs font-mono">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent className="bg-neutral-900 border-neutral-800 text-neutral-300">
-              <SelectItem value="newest" className="text-xs  font-mono">
-                Newest
-              </SelectItem>
-              <SelectItem value="oldest" className="text-xs font-mono">
-                Oldest
-              </SelectItem>
-              <SelectItem value="highest" className="text-xs font-mono">
-                Highest Rated
-              </SelectItem>
-              <SelectItem value="lowest" className="text-xs font-mono">
-                Lowest Rated
-              </SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        {currentUser?.data && (
-          <Dialog open={open} onOpenChange={setIsOpen}>
-            <DialogTrigger
-              render={
-                <Button variant={'outline'} size="sm" className=" text-white text-xs">
-                  Write a Review
-                </Button>
-              }
-            />
-
-            <DialogContent className="bg-neutral-900 border-neutral-800 max-w-lg">
-              <DialogHeader>
-                <DialogTitle className="text-neutral-100">Write a Review</DialogTitle>
-              </DialogHeader>
-
-              <WriteReview resourceId={resourceId} onSuccess={() => setIsOpen(false)} />
-            </DialogContent>
-          </Dialog>
-        )}
-      </div>
-
-      {reviews.length === 0 && <p className="text-neutral-500 text-sm">No reviews yet. Be the first to review!</p>}
-
+      <EmptyReviews />
       {reviews.map((review) => (
-        <div key={review.id} className="bg-neutral-900 border border-neutral-800 rounded-lg p-5 flex flex-col gap-3">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-neutral-200">@{review.user.username}</span>
-            <div className="flex items-center gap-3">
-              {currentUser?.data?.id === review.userId && (
-                <Button
-                  className="text-xs text-red-500 hover:text-red-400 font-mono transition-colors"
-                  variant={'ghost'}
-                  size={'icon-lg'}
-                  onClick={() => deleteReview(review.id)}
-                  disabled={isPending}
-                >
-                  <Trash2 size={20} />
-                </Button>
-              )}
-              <span className="text-xs text-neutral-500 font-mono">
-                {new Date(review.createdAt!).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric',
-                })}
-              </span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-1">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((star) => (
-              <Star
-                key={star}
-                className={`w-3.5 h-3.5 ${star <= review.rating ? 'text-amber-400 fill-amber-400' : 'text-neutral-700 fill-neutral-700'}`}
-              />
-            ))}
-            <span className="text-xs text-neutral-400 ml-2 font-mono">{review.rating}/10</span>
-          </div>
-
-          {review.reviewText && <p className="text-sm text-neutral-300 leading-relaxed">{review.reviewText}</p>}
-
-          {review.tags.length > 0 && (
-            <div className="flex gap-2 flex-wrap">
-              {review.tags.map((tag) => (
-                <Badge
-                  key={tag.id}
-                  variant="secondary"
-                  className="text-[11px] font-mono bg-neutral-800 text-neutral-400 border border-neutral-700"
-                >
-                  {tag.displayName}
-                </Badge>
-              ))}
-            </div>
-          )}
-
-          <div className="flex items-center justify-end">
-            <Button
-              variant="ghost"
-              size="icon-lg"
-              disabled={togglingLike || !currentUser?.data}
-              onClick={() => toggleLike({ id: review.id, isLikedByCurrentUser: review.isLikedByCurrentUser })}
-              className="flex items-center gap-1.5 text-xs font-mono text-neutral-400 hover:text-red-400 transition-colors"
-            >
-              <Heart size={16} className={review.isLikedByCurrentUser ? 'fill-red-500 text-red-500' : ''} />
-              <span>{review.reviewLikeCount ?? 0}</span>
-            </Button>
-          </div>
-        </div>
+        <ReviewCard
+          key={review.id}
+          review={review}
+          currentUserId={currentUser?.data?.id}
+          onDelete={deleteReview}
+          onToggleLike={toggleLike}
+          isDeleting={isPending}
+          isTogglingLike={togglingLike}
+          isLoggedIn={!!currentUser?.data}
+        />
       ))}
     </section>
   );
