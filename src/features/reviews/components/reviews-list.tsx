@@ -41,7 +41,8 @@ export function ReviewsList({ resourceId }: ReviewsListProps) {
         isLoggedIn={!!currentUser?.data}
       />
 
-      <EmptyReviews />
+      {reviews.length === 0 && <EmptyReviews />}
+
       {reviews.map((review) => (
         <ReviewCard
           key={review.id}
