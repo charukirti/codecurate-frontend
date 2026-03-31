@@ -2,19 +2,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Field, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useSignup } from '@/features/auth/mutations/use-signup';
 import { signUpSchema, type SignUpInput } from '@/features/auth/schemas/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { useForm } from 'react-hook-form';
 
 export function SignUpForm() {
-  const roleItems = [
-    { value: 'user', label: 'User' },
-    { value: 'admin', label: 'Admin' },
-  ];
-
   const {
     register,
     handleSubmit,
@@ -94,25 +88,6 @@ export function SignUpForm() {
             {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
           </Field>
 
-          <Field>
-            <FieldLabel htmlFor="small-form-role">Select your role</FieldLabel>
-            <Select items={roleItems} defaultValue={roleItems[0].value}>
-              <SelectTrigger id="small-form-role">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {roleItems.map((item) => (
-                    <SelectItem key={item.value} value={item.value} {...register('role')}>
-                      {item.label}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-            {errors.role && <p className="text-red-500 text-xs mt-1">{errors.role.message}</p>}
-          </Field>
-
           <Button type="submit" className="w-full">
             {isSubmitting ? 'Signing up...' : 'Sign Up'}
           </Button>
@@ -122,9 +97,9 @@ export function SignUpForm() {
       <CardFooter className="justify-center pt-0">
         <p className="text-sm text-neutral-500">
           Already have an account?{' '}
-          <a href="/sign-in" className="text-neutral-200 underline underline-offset-4 hover:text-white">
+          <Link to="/auth/sign-in" className="text-neutral-200 underline underline-offset-4 hover:text-white">
             Sign in
-          </a>
+          </Link>
         </p>
       </CardFooter>
     </Card>
