@@ -10,8 +10,8 @@ interface ReviewHeaderProps {
   setIsOpen: (open: boolean) => void;
   sort: SortType;
   setSort: (sort: SortType) => void;
-  totalItems: number; // instead of data
-  isLoggedIn: boolean; // instead of currentUser
+  totalItems: number;
+  isLoggedIn: boolean;
 }
 
 export function ReviewHeader({
