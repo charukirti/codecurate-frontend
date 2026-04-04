@@ -1,6 +1,17 @@
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useGetCurrentUser } from '@/features/auth/queries/useGetCurrentUser';
+import { DeleteProfile } from '@/features/users/components/delete-profile';
 import { UpdateProfile } from '@/features/users/components/update-profile';
 import type { PublicProfile } from '@/features/users/types/users.types';
 import { CalendarDays } from 'lucide-react';
@@ -13,6 +24,7 @@ interface ProfileHeroProps {
 export function ProfileHero({ profile }: ProfileHeroProps) {
   const [open, setIsOpen] = useState(false);
   const { data } = useGetCurrentUser();
+  const isOwner = data?.data.username === profile.username;
   return (
     <section className="border-b border-neutral-800 py-10 flex gap-4">
       <div className="container mx-auto px-4 ">
@@ -34,7 +46,7 @@ export function ProfileHero({ profile }: ProfileHeroProps) {
           </span>
         </div>
       </div>
-      {data?.data.username && (
+      {isOwner && (
         <Dialog open={open} onOpenChange={setIsOpen}>
           <DialogTrigger
             render={
@@ -52,6 +64,29 @@ export function ProfileHero({ profile }: ProfileHeroProps) {
             <UpdateProfile currentName={profile.name} currentUsername={profile.username} />
           </DialogContent>
         </Dialog>
+      )}
+
+      {isOwner && (
+        <AlertDialog>
+          <AlertDialogTrigger render={<Button variant={'destructive'}>Delete Profile</Button>} />
+
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle className="mb-2">
+                Are you sure you want to delete your profile? This action cannot be undone.
+              </AlertDialogTitle>
+
+              <DeleteProfile />
+            </AlertDialogHeader>
+
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction form="delete-profile-form" type="submit" className="bg-red-500 hover:bg-red-600">
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       )}
     </section>
   );

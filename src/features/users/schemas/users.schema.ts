@@ -27,5 +27,10 @@ export const updateProfileSchema = z
     path: ['name'],
   });
 
+export const deleteProfileSchema = z.object({
+  password: z.string().min(1, 'password is required'),
+});
+
 export type GetUserReviewsQuery = z.infer<typeof getUserReviewsQuerySchema>;
 export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
+export type DeleteProfileInput = z.infer<typeof deleteProfileSchema>;
