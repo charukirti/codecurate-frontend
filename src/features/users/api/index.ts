@@ -16,7 +16,7 @@ export async function updateProfile(data: { name?: string; username?: string }) 
   return response.data;
 }
 
-export async function deleteProfile(data: { password: string; confirmDeletion: boolean }) {
+export async function deleteProfile(data: { password: string }) {
   const response = await api.delete(`/users/me`, { data });
   return response.data;
 }
