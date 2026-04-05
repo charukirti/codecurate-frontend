@@ -37,7 +37,7 @@ export function ResourceFilters() {
     if (inputRef.current) inputRef.current.value = '';
   }
 
-  const hasFilters = !!type || !!codeLang || !search;
+  const hasFilters = !!type || !!codeLang || !!search;
 
   return (
     <div className="flex  items-center justify-between mb-6">

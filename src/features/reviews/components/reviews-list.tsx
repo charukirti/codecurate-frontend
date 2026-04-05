@@ -17,14 +17,11 @@ interface ReviewsListProps {
 export function ReviewsList({ resourceId }: ReviewsListProps) {
   const [open, setIsOpen] = useState(false);
   const [sort, setSort] = useState<SortType>('newest');
+  const reviewParams = { page: 1, limit: 10, sort };
   const { data: currentUser } = useGetCurrentUser();
-  const { data, isLoading } = useQuery(reviewsQueryOptions(resourceId, { page: 1, limit: 10, sort }));
+  const { data, isLoading } = useQuery(reviewsQueryOptions(resourceId, reviewParams));
   const { mutate: deleteReview, isPending } = useDeleteReview(resourceId);
-  const { mutate: toggleLike, isPending: togglingLike } = useToggleReviewLike(resourceId, {
-    page: 1,
-    limit: 10,
-    sort,
-  });
+  const { mutate: toggleLike, isPending: togglingLike } = useToggleReviewLike(resourceId, reviewParams);
   const reviews = data?.data.reviews ?? [];
 
   if (isLoading) return <ReviewSkeleton count={3} />;
