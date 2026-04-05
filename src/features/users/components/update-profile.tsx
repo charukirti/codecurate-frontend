@@ -27,8 +27,7 @@ export function UpdateProfile({ currentName, currentUsername }: UpdateProfilePro
   });
 
   function onSubmit(data: UpdateProfileInput) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const payload = Object.fromEntries(Object.entries(data).filter(([_, v]) => v !== '')) as {
+    const payload = Object.fromEntries(Object.entries(data).filter(([, v]) => v !== '')) as {
       name?: string;
       username?: string;
     };
