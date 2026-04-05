@@ -1,5 +1,5 @@
 import { getUser } from '@/features/auth/api';
-import { authKeys } from '@/features/auth/mutations/queryKeys';
+import { authKeys } from '@/features/auth/queryKeys';
 import { queryOptions, useQuery } from '@tanstack/react-query';
 
 export function currentUserQueryOptions() {

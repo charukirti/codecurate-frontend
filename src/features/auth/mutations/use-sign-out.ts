@@ -1,5 +1,5 @@
 import { signOut } from '@/features/auth/api';
-import { authKeys } from '@/features/auth/mutations/queryKeys';
+import { authKeys } from '@/features/auth/queryKeys';
 import { clearAccessToken } from '@/lib/axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
@@ -13,7 +13,7 @@ export function useSignOut() {
     mutationFn: () => signOut(),
     onSuccess: () => {
       clearAccessToken();
-      queryClient.invalidateQueries({ queryKey: authKeys.currentUser() });
+      queryClient.removeQueries({ queryKey: authKeys.currentUser() });
       navigate({ to: '/auth/sign-in' });
       toast.success('Signed out successfully');
     },

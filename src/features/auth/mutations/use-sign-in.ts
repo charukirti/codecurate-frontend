@@ -4,7 +4,7 @@ import { signIn } from '@/features/auth/api';
 import { clearAccessToken, setAccessToken } from '@/lib/axios';
 import type { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
-import { authKeys } from '@/features/auth/mutations/queryKeys';
+import { authKeys } from '@/features/auth/queryKeys';
 
 export function useSignInMutation() {
   const queryClient = useQueryClient();
