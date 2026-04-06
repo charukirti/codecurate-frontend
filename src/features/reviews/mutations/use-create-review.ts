@@ -11,6 +11,7 @@ export function useCreateReview(resourceId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['resources', resourceId, 'reviews'] });
       queryClient.invalidateQueries({ queryKey: ['resource', resourceId] });
+      toast.success('Your review has been posted!');
     },
     onError: (error: AxiosError<{ message: string }>) => {
       const errorMessage = error.response?.data.message || 'Failed to submit your review. Please try again.';
