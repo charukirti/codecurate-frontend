@@ -4,7 +4,7 @@ import { ResourcePageSkeleton } from '@/features/resources/components/resource-p
 import { resourceQueryOptions } from '@/features/resources/queries/query-options';
 import { ReviewsList } from '@/features/reviews/components/reviews-list';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { createFileRoute, useParams } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/resources/$id')({
   loader: ({ context, params }) => context.queryClient.ensureQueryData(resourceQueryOptions(params.id)),
@@ -18,7 +18,7 @@ export const Route = createFileRoute('/resources/$id')({
 });
 
 function RouteComponent() {
-  const { id } = useParams({ from: '/resources/$id' });
+  const { id } = Route.useParams();
   const { data } = useSuspenseQuery(resourceQueryOptions(id));
 
   const resource = data.data;

@@ -3,7 +3,7 @@ import { ProfilePageSkeleton } from '@/features/users/components/profile-page-sk
 import { UserReviews } from '@/features/users/components/user-reviews';
 import { getPublicProfileQueryOptions, getUserReviewsQueryOptions } from '@/features/users/queries/query-options';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { createFileRoute, useParams } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/users/$username')({
   loader: ({ context, params }) =>
@@ -21,7 +21,7 @@ export const Route = createFileRoute('/users/$username')({
 });
 
 function RouteComponent() {
-  const { username } = useParams({ from: '/users/$username' });
+  const { username } = Route.useParams();
   const { data: profileData } = useSuspenseQuery(getPublicProfileQueryOptions(username));
   const { data: reviewsData } = useSuspenseQuery(getUserReviewsQueryOptions(username));
 
