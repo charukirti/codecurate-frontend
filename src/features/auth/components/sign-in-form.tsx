@@ -12,14 +12,14 @@ export function SignInForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm({
     resolver: zodResolver(signInSchema),
   });
 
   const navigate = useNavigate();
 
-  const { mutate: signIn } = useSignInMutation();
+  const { mutate: signIn, isPending } = useSignInMutation();
 
   const onSubmit = (data: SignInInput) => {
     signIn(data, {
@@ -66,8 +66,8 @@ export function SignInForm() {
             </Link>
             {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
           </Field>
-          <Button type="submit" className="w-full" disabled={isSubmitting} variant={'default'}>
-            {isSubmitting ? 'Signing in...' : 'Sign In'}
+          <Button type="submit" className="w-full" disabled={isPending} variant={'default'}>
+            {isPending ? 'Signing in...' : 'Sign In'}
           </Button>
         </form>
       </CardContent>
