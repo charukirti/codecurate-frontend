@@ -11,7 +11,7 @@ import {
 import { useSignOut } from '@/features/auth/mutations/use-sign-out';
 import { useGetCurrentUser } from '@/features/auth/queries/useGetCurrentUser';
 import { Link } from '@tanstack/react-router';
-import { User } from 'lucide-react';
+import { FolderArchive, User } from 'lucide-react';
 
 interface HeaderProps {
   variant?: 'rootLayout' | 'authLayout';
@@ -68,7 +68,16 @@ export function Header({ variant }: HeaderProps) {
                     className="hover:bg-neutral-800 "
                     render={
                       <Link to="/users/$username" params={{ username: data.data.username }} className="cursor-pointer">
-                        <User /> Your Profile
+                        <User /> My Profile
+                      </Link>
+                    }
+                  />
+
+                  <DropdownMenuItem
+                    className="hover:bg-neutral-800 "
+                    render={
+                      <Link to="/my-submissions" className="cursor-pointer">
+                        <FolderArchive /> My Submissions
                       </Link>
                     }
                   />
