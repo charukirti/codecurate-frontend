@@ -11,7 +11,7 @@ import {
 import { useSignOut } from '@/features/auth/mutations/use-sign-out';
 import { useGetCurrentUser } from '@/features/auth/queries/useGetCurrentUser';
 import { Link } from '@tanstack/react-router';
-import { FolderArchive, User } from 'lucide-react';
+import { FolderArchive, Plus, User } from 'lucide-react';
 
 interface HeaderProps {
   variant?: 'rootLayout' | 'authLayout';
@@ -72,11 +72,19 @@ export function Header({ variant }: HeaderProps) {
                       </Link>
                     }
                   />
+                  <DropdownMenuItem
+                    className="hover:bg-neutral-800"
+                    render={
+                      <Link to="/submissions/create" className="cursor-pointer">
+                        <Plus /> Suggest a Video / Playlist
+                      </Link>
+                    }
+                  />
 
                   <DropdownMenuItem
                     className="hover:bg-neutral-800 "
                     render={
-                      <Link to="/my-submissions" className="cursor-pointer">
+                      <Link to="/submissions" className="cursor-pointer">
                         <FolderArchive /> My Submissions
                       </Link>
                     }
