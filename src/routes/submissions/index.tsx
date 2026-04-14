@@ -6,7 +6,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute, isRedirect, redirect } from '@tanstack/react-router';
 import { FileX } from 'lucide-react';
 
-export const Route = createFileRoute('/my-submissions/')({
+export const Route = createFileRoute('/submissions/')({
   beforeLoad: async ({ context }) => {
     try {
       const user = await context.queryClient.ensureQueryData(currentUserQueryOptions());

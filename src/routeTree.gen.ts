@@ -10,13 +10,14 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UsersRouteRouteImport } from './routes/users/route'
+import { Route as SubmissionsRouteRouteImport } from './routes/submissions/route'
 import { Route as ResourcesRouteRouteImport } from './routes/resources/route'
-import { Route as MySubmissionsRouteRouteImport } from './routes/my-submissions/route'
 import { Route as AuthRouteRouteImport } from './routes/auth/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SubmissionsIndexRouteImport } from './routes/submissions/index'
 import { Route as ResourcesIndexRouteImport } from './routes/resources/index'
-import { Route as MySubmissionsIndexRouteImport } from './routes/my-submissions/index'
 import { Route as UsersUsernameRouteImport } from './routes/users/$username'
+import { Route as SubmissionsCreateRouteImport } from './routes/submissions/create'
 import { Route as ResourcesIdRouteImport } from './routes/resources/$id'
 import { Route as AuthSignUpRouteImport } from './routes/auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
@@ -28,14 +29,14 @@ const UsersRouteRoute = UsersRouteRouteImport.update({
   path: '/users',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SubmissionsRouteRoute = SubmissionsRouteRouteImport.update({
+  id: '/submissions',
+  path: '/submissions',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResourcesRouteRoute = ResourcesRouteRouteImport.update({
   id: '/resources',
   path: '/resources',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MySubmissionsRouteRoute = MySubmissionsRouteRouteImport.update({
-  id: '/my-submissions',
-  path: '/my-submissions',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRouteRoute = AuthRouteRouteImport.update({
@@ -48,20 +49,25 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SubmissionsIndexRoute = SubmissionsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SubmissionsRouteRoute,
+} as any)
 const ResourcesIndexRoute = ResourcesIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => ResourcesRouteRoute,
 } as any)
-const MySubmissionsIndexRoute = MySubmissionsIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => MySubmissionsRouteRoute,
-} as any)
 const UsersUsernameRoute = UsersUsernameRouteImport.update({
   id: '/$username',
   path: '/$username',
   getParentRoute: () => UsersRouteRoute,
+} as any)
+const SubmissionsCreateRoute = SubmissionsCreateRouteImport.update({
+  id: '/create',
+  path: '/create',
+  getParentRoute: () => SubmissionsRouteRoute,
 } as any)
 const ResourcesIdRoute = ResourcesIdRouteImport.update({
   id: '/$id',
@@ -92,17 +98,18 @@ const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
-  '/my-submissions': typeof MySubmissionsRouteRouteWithChildren
   '/resources': typeof ResourcesRouteRouteWithChildren
+  '/submissions': typeof SubmissionsRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/resources/$id': typeof ResourcesIdRoute
+  '/submissions/create': typeof SubmissionsCreateRoute
   '/users/$username': typeof UsersUsernameRoute
-  '/my-submissions/': typeof MySubmissionsIndexRoute
   '/resources/': typeof ResourcesIndexRoute
+  '/submissions/': typeof SubmissionsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -113,42 +120,45 @@ export interface FileRoutesByTo {
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/resources/$id': typeof ResourcesIdRoute
+  '/submissions/create': typeof SubmissionsCreateRoute
   '/users/$username': typeof UsersUsernameRoute
-  '/my-submissions': typeof MySubmissionsIndexRoute
   '/resources': typeof ResourcesIndexRoute
+  '/submissions': typeof SubmissionsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
-  '/my-submissions': typeof MySubmissionsRouteRouteWithChildren
   '/resources': typeof ResourcesRouteRouteWithChildren
+  '/submissions': typeof SubmissionsRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/resources/$id': typeof ResourcesIdRoute
+  '/submissions/create': typeof SubmissionsCreateRoute
   '/users/$username': typeof UsersUsernameRoute
-  '/my-submissions/': typeof MySubmissionsIndexRoute
   '/resources/': typeof ResourcesIndexRoute
+  '/submissions/': typeof SubmissionsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/auth'
-    | '/my-submissions'
     | '/resources'
+    | '/submissions'
     | '/users'
     | '/auth/forgot-password'
     | '/auth/reset-password'
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/resources/$id'
+    | '/submissions/create'
     | '/users/$username'
-    | '/my-submissions/'
     | '/resources/'
+    | '/submissions/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -159,31 +169,33 @@ export interface FileRouteTypes {
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/resources/$id'
+    | '/submissions/create'
     | '/users/$username'
-    | '/my-submissions'
     | '/resources'
+    | '/submissions'
   id:
     | '__root__'
     | '/'
     | '/auth'
-    | '/my-submissions'
     | '/resources'
+    | '/submissions'
     | '/users'
     | '/auth/forgot-password'
     | '/auth/reset-password'
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/resources/$id'
+    | '/submissions/create'
     | '/users/$username'
-    | '/my-submissions/'
     | '/resources/'
+    | '/submissions/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
-  MySubmissionsRouteRoute: typeof MySubmissionsRouteRouteWithChildren
   ResourcesRouteRoute: typeof ResourcesRouteRouteWithChildren
+  SubmissionsRouteRoute: typeof SubmissionsRouteRouteWithChildren
   UsersRouteRoute: typeof UsersRouteRouteWithChildren
 }
 
@@ -196,18 +208,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/submissions': {
+      id: '/submissions'
+      path: '/submissions'
+      fullPath: '/submissions'
+      preLoaderRoute: typeof SubmissionsRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/resources': {
       id: '/resources'
       path: '/resources'
       fullPath: '/resources'
       preLoaderRoute: typeof ResourcesRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/my-submissions': {
-      id: '/my-submissions'
-      path: '/my-submissions'
-      fullPath: '/my-submissions'
-      preLoaderRoute: typeof MySubmissionsRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -224,6 +236,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/submissions/': {
+      id: '/submissions/'
+      path: '/'
+      fullPath: '/submissions/'
+      preLoaderRoute: typeof SubmissionsIndexRouteImport
+      parentRoute: typeof SubmissionsRouteRoute
+    }
     '/resources/': {
       id: '/resources/'
       path: '/'
@@ -231,19 +250,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResourcesIndexRouteImport
       parentRoute: typeof ResourcesRouteRoute
     }
-    '/my-submissions/': {
-      id: '/my-submissions/'
-      path: '/'
-      fullPath: '/my-submissions/'
-      preLoaderRoute: typeof MySubmissionsIndexRouteImport
-      parentRoute: typeof MySubmissionsRouteRoute
-    }
     '/users/$username': {
       id: '/users/$username'
       path: '/$username'
       fullPath: '/users/$username'
       preLoaderRoute: typeof UsersUsernameRouteImport
       parentRoute: typeof UsersRouteRoute
+    }
+    '/submissions/create': {
+      id: '/submissions/create'
+      path: '/create'
+      fullPath: '/submissions/create'
+      preLoaderRoute: typeof SubmissionsCreateRouteImport
+      parentRoute: typeof SubmissionsRouteRoute
     }
     '/resources/$id': {
       id: '/resources/$id'
@@ -301,17 +320,6 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren,
 )
 
-interface MySubmissionsRouteRouteChildren {
-  MySubmissionsIndexRoute: typeof MySubmissionsIndexRoute
-}
-
-const MySubmissionsRouteRouteChildren: MySubmissionsRouteRouteChildren = {
-  MySubmissionsIndexRoute: MySubmissionsIndexRoute,
-}
-
-const MySubmissionsRouteRouteWithChildren =
-  MySubmissionsRouteRoute._addFileChildren(MySubmissionsRouteRouteChildren)
-
 interface ResourcesRouteRouteChildren {
   ResourcesIdRoute: typeof ResourcesIdRoute
   ResourcesIndexRoute: typeof ResourcesIndexRoute
@@ -325,6 +333,19 @@ const ResourcesRouteRouteChildren: ResourcesRouteRouteChildren = {
 const ResourcesRouteRouteWithChildren = ResourcesRouteRoute._addFileChildren(
   ResourcesRouteRouteChildren,
 )
+
+interface SubmissionsRouteRouteChildren {
+  SubmissionsCreateRoute: typeof SubmissionsCreateRoute
+  SubmissionsIndexRoute: typeof SubmissionsIndexRoute
+}
+
+const SubmissionsRouteRouteChildren: SubmissionsRouteRouteChildren = {
+  SubmissionsCreateRoute: SubmissionsCreateRoute,
+  SubmissionsIndexRoute: SubmissionsIndexRoute,
+}
+
+const SubmissionsRouteRouteWithChildren =
+  SubmissionsRouteRoute._addFileChildren(SubmissionsRouteRouteChildren)
 
 interface UsersRouteRouteChildren {
   UsersUsernameRoute: typeof UsersUsernameRoute
@@ -341,8 +362,8 @@ const UsersRouteRouteWithChildren = UsersRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
-  MySubmissionsRouteRoute: MySubmissionsRouteRouteWithChildren,
   ResourcesRouteRoute: ResourcesRouteRouteWithChildren,
+  SubmissionsRouteRoute: SubmissionsRouteRouteWithChildren,
   UsersRouteRoute: UsersRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport

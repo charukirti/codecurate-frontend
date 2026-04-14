@@ -2,7 +2,7 @@ import { Header } from '@/components/layout/header';
 import { Outlet } from '@tanstack/react-router';
 import { createFileRoute } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/my-submissions')({
+export const Route = createFileRoute('/submissions')({
   component: MySubmissionsLayout,
 });
 
