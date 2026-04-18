@@ -10,7 +10,7 @@ type RejectSubmissionMutationArgs = {
   data: RejectSubmissionInput;
 };
 
-export function useAcceptSubmission() {
+export function useRejectSubmission() {
   const queryClient = useQueryClient();
 
   return useMutation({

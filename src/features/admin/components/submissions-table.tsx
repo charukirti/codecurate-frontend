@@ -6,9 +6,11 @@ import { truncateUrl } from '@/lib/utils';
 
 interface SubmissionTableProps {
   submissions: submission[];
+  onAccept: (submission: submission) => void;
+  onReject: (submission: submission) => void;
 }
 
-export function SubmissionsTable({ submissions }: SubmissionTableProps) {
+export function SubmissionsTable({ submissions, onAccept, onReject }: SubmissionTableProps) {
   return (
     <Table className="w-full text-sm">
       <TableHeader className="bg-muted/50">
@@ -40,7 +42,11 @@ export function SubmissionsTable({ submissions }: SubmissionTableProps) {
               {new Date(submission.createdAt).toLocaleDateString()}
             </TableCell>
             <TableCell className="px-4 py-3">
-              <ActionButtons status={submission.status} />
+              <ActionButtons
+                status={submission.status}
+                onAccept={() => onAccept(submission)}
+                onReject={() => onReject(submission)}
+              />
             </TableCell>
           </TableRow>
         ))}

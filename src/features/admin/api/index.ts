@@ -17,7 +17,7 @@ export async function acceptSubmission(submissionId: string, data: AcceptSubmiss
 }
 
 export async function rejectSubmission(submissionId: string, data: RejectSubmissionInput) {
-  const response = await api.patch(`/admin/submissions/${submissionId}`, data);
+  const response = await api.patch(`/admin/submissions/${submissionId}/reject`, data);
   return response.data;
 }
 
