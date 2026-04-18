@@ -1,26 +1,11 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import type { Status, Submission } from '@/features/submissions/types/submissions.types';
+import type { Submission } from '@/features/submissions/types/submissions.types';
+import { statusConfig, truncateUrl } from '@/lib/utils';
 import { AlertTriangle, ExternalLink } from 'lucide-react';
 
 interface SubmissionCardProps {
   data: Submission;
-}
-
-const statusConfig: Record<Status, { text: string; color: string }> = {
-  pending: { text: 'Pending', color: '#F8DE22' },
-  accepted: { text: 'Accepted', color: '#6FCF97' },
-  rejected: { text: 'Rejected', color: '#DB1A1A' },
-};
-
-function truncateUrl(url: string, maxLength: number = 30): string {
-  try {
-    const urlObj = new URL(url);
-    const display = urlObj.hostname + urlObj.pathname;
-    return display.length > maxLength ? display.slice(0, maxLength) + '...' : display;
-  } catch {
-    return url.length > maxLength ? url.slice(0, maxLength) + '...' : url;
-  }
 }
 
 export function SubmissionCard({ data }: SubmissionCardProps) {

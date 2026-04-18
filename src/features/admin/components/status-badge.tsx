@@ -1,11 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import type { Status } from '@/features/submissions/types/submissions.types';
-
-const statusConfig: Record<Status, { text: string; color: string }> = {
-  pending: { text: 'Pending', color: '#F8DE22' },
-  accepted: { text: 'Accepted', color: '#6FCF97' },
-  rejected: { text: 'Rejected', color: '#DB1A1A' },
-};
+import { statusConfig } from '@/lib/utils';
 
 interface StatusBadgeProps {
   status: Status;

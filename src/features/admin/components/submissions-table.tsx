@@ -2,6 +2,7 @@ import { ActionButtons } from '@/features/admin/components/action-buttons';
 import { StatusBadge } from '@/features/admin/components/status-badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/features/admin/components/table';
 import type { submission } from '@/features/admin/types/admin.types';
+import { truncateUrl } from '@/lib/utils';
 
 interface SubmissionTableProps {
   submissions: submission[];
@@ -28,7 +29,9 @@ export function SubmissionsTable({ submissions }: SubmissionTableProps) {
               <div className="font-medium">{submission.submitter.username}</div>
               <div className="text-xs text-muted-foreground">{submission.submitter.email}</div>
             </TableCell>
-            <TableCell className="px-4 py-3 max-w-45 truncate text-xs text-blue-600">{submission.youtubeURL}</TableCell>
+            <TableCell className="px-4 py-3 max-w-45 truncate text-xs text-blue-600">
+              {truncateUrl(submission.youtubeURL)}
+            </TableCell>
             <TableCell className="px-4 py-3">{submission.topic}</TableCell>
             <TableCell className="px-4 py-3">
               <StatusBadge status={submission.status} />
