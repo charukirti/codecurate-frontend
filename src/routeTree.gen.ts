@@ -17,6 +17,7 @@ import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SubmissionsIndexRouteImport } from './routes/submissions/index'
 import { Route as ResourcesIndexRouteImport } from './routes/resources/index'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as UsersUsernameRouteImport } from './routes/users/$username'
 import { Route as SubmissionsCreateRouteImport } from './routes/submissions/create'
 import { Route as ResourcesIdRouteImport } from './routes/resources/$id'
@@ -66,6 +67,11 @@ const ResourcesIndexRoute = ResourcesIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => ResourcesRouteRoute,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const UsersUsernameRoute = UsersUsernameRouteImport.update({
   id: '/$username',
@@ -129,12 +135,12 @@ export interface FileRoutesByFullPath {
   '/resources/$id': typeof ResourcesIdRoute
   '/submissions/create': typeof SubmissionsCreateRoute
   '/users/$username': typeof UsersUsernameRoute
+  '/admin/': typeof AdminIndexRoute
   '/resources/': typeof ResourcesIndexRoute
   '/submissions/': typeof SubmissionsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteRouteWithChildren
   '/auth': typeof AuthRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
   '/admin/resources': typeof AdminResourcesRoute
@@ -146,6 +152,7 @@ export interface FileRoutesByTo {
   '/resources/$id': typeof ResourcesIdRoute
   '/submissions/create': typeof SubmissionsCreateRoute
   '/users/$username': typeof UsersUsernameRoute
+  '/admin': typeof AdminIndexRoute
   '/resources': typeof ResourcesIndexRoute
   '/submissions': typeof SubmissionsIndexRoute
 }
@@ -166,6 +173,7 @@ export interface FileRoutesById {
   '/resources/$id': typeof ResourcesIdRoute
   '/submissions/create': typeof SubmissionsCreateRoute
   '/users/$username': typeof UsersUsernameRoute
+  '/admin/': typeof AdminIndexRoute
   '/resources/': typeof ResourcesIndexRoute
   '/submissions/': typeof SubmissionsIndexRoute
 }
@@ -187,12 +195,12 @@ export interface FileRouteTypes {
     | '/resources/$id'
     | '/submissions/create'
     | '/users/$username'
+    | '/admin/'
     | '/resources/'
     | '/submissions/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin'
     | '/auth'
     | '/users'
     | '/admin/resources'
@@ -204,6 +212,7 @@ export interface FileRouteTypes {
     | '/resources/$id'
     | '/submissions/create'
     | '/users/$username'
+    | '/admin'
     | '/resources'
     | '/submissions'
   id:
@@ -223,6 +232,7 @@ export interface FileRouteTypes {
     | '/resources/$id'
     | '/submissions/create'
     | '/users/$username'
+    | '/admin/'
     | '/resources/'
     | '/submissions/'
   fileRoutesById: FileRoutesById
@@ -294,6 +304,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResourcesIndexRouteImport
       parentRoute: typeof ResourcesRouteRoute
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/users/$username': {
       id: '/users/$username'
       path: '/$username'
@@ -363,11 +380,13 @@ declare module '@tanstack/react-router' {
 interface AdminRouteRouteChildren {
   AdminResourcesRoute: typeof AdminResourcesRoute
   AdminSubmissionsRoute: typeof AdminSubmissionsRoute
+  AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminResourcesRoute: AdminResourcesRoute,
   AdminSubmissionsRoute: AdminSubmissionsRoute,
+  AdminIndexRoute: AdminIndexRoute,
 }
 
 const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(

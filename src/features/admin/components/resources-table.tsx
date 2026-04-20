@@ -13,12 +13,14 @@ export function ResourcesTable({ resources }: ResourcesTableProps) {
   }
   return (
     <Table className="w-full text-sm">
-      <TableHeader className="border-b">
-        <TableHead className="px-4 py-3 text-left font-medium text-muted-foreground">Title</TableHead>
-        <TableHead className="px-4 py-3 text-left font-medium text-muted-foreground">Topic</TableHead>
-        <TableHead className="px-4 py-3 text-left font-medium text-muted-foreground">Type</TableHead>
-        <TableHead className="px-4 py-3 text-left font-medium text-muted-foreground">Avg. Rating</TableHead>
-        <TableHead className="px-4 py-3 text-left font-medium text-muted-foreground">Actions</TableHead>
+      <TableHeader className="bg-muted/50">
+        <TableRow className="border-b">
+          <TableHead className="px-4 py-3 text-left font-medium text-muted-foreground">Title</TableHead>
+          <TableHead className="px-4 py-3 text-left font-medium text-muted-foreground">Topic</TableHead>
+          <TableHead className="px-4 py-3 text-left font-medium text-muted-foreground">Type</TableHead>
+          <TableHead className="px-4 py-3 text-left font-medium text-muted-foreground">Avg. Rating</TableHead>
+          <TableHead className="px-4 py-3 text-left font-medium text-muted-foreground">Actions</TableHead>
+        </TableRow>
       </TableHeader>
 
       <TableBody>
