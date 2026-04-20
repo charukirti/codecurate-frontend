@@ -3,22 +3,11 @@ import { RejectDialog } from '@/features/admin/components/reject-dialog';
 import { SubmissionsTable } from '@/features/admin/components/submissions-table';
 import { adminSubmissionsQueryOptions } from '@/features/admin/queries/query-options';
 import type { submission } from '@/features/admin/types/admin.types';
-import { currentUserQueryOptions } from '@/features/auth/queries/useGetCurrentUser';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { createFileRoute, isRedirect, redirect } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 
 export const Route = createFileRoute('/admin/submissions')({
-  beforeLoad: async ({ context }) => {
-    try {
-      const user = await context.queryClient.ensureQueryData(currentUserQueryOptions());
-
-      if (user.data.role !== 'admin') redirect({ to: '/auth/sign-in' });
-    } catch (error) {
-      if (isRedirect(error)) throw error;
-      throw redirect({ to: '/auth/sign-in' });
-    }
-  },
   loader: ({ context }) => {
     context.queryClient.ensureQueryData(adminSubmissionsQueryOptions());
   },

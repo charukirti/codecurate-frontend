@@ -1,7 +1,18 @@
 import { Header } from '@/components/layout/header';
-import { createFileRoute, Outlet } from '@tanstack/react-router';
+import { currentUserQueryOptions } from '@/features/auth/queries/useGetCurrentUser';
+import { createFileRoute, isRedirect, Outlet, redirect } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/admin')({
+  beforeLoad: async ({ context }) => {
+    try {
+      const user = await context.queryClient.ensureQueryData(currentUserQueryOptions());
+
+      if (user.data.role !== 'admin') throw redirect({ to: '/' });
+    } catch (error) {
+      if (isRedirect(error)) throw error;
+      throw redirect({ to: '/' });
+    }
+  },
   component: AdminLayout,
 });
 function AdminLayout() {

@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
 
-export function useAddResource() {
+export function useDeleteResource() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => deleteResource(id),
