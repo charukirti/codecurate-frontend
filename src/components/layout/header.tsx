@@ -88,15 +88,17 @@ export function Header({ variant }: HeaderProps) {
                         </Link>
                       }
                     />
-                    <DropdownMenuItem
-                      className="hover:bg-neutral-800 "
-                      render={
-                        <Link to="/admin" search={{ page: 1, limit: 10 }} className="cursor-pointer">
-                          <ShieldIcon />
-                          Admin Panel
-                        </Link>
-                      }
-                    />
+                    {data.data.role === 'admin' && (
+                      <DropdownMenuItem
+                        className="hover:bg-neutral-800 "
+                        render={
+                          <Link to="/admin" search={{ page: 1, limit: 10 }} className="cursor-pointer">
+                            <ShieldIcon />
+                            Admin Panel
+                          </Link>
+                        }
+                      />
+                    )}
 
                     <DropdownMenuItem
                       className="hover:bg-neutral-800 "
