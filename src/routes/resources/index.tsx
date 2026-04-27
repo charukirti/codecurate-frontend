@@ -2,6 +2,7 @@ import { TutorialCard } from '@/features/home/components/tutorial-card';
 import { ResourceFilters } from '@/features/resources/components/resource-filters';
 import { ResourcePagination } from '@/features/resources/components/resource-pagination';
 import { TutorialCardsSkeleton } from '@/features/resources/components/tutorial-cards-skeleton';
+import { useResourceFilters } from '@/features/resources/hooks/use-resource-filters';
 import { resourcesQueryOptions } from '@/features/resources/queries/query-options';
 import { resourcesSearchSchema } from '@/features/resources/schemas/resources.schema';
 import { useSuspenseQuery } from '@tanstack/react-query';
@@ -34,6 +35,7 @@ export const Route = createFileRoute('/resources/')({
 function ResourcesPage() {
   const search = Route.useSearch();
   const { data } = useSuspenseQuery(resourcesQueryOptions(search));
+  const { hasActiveFilters } = useResourceFilters();
   const resources = data.data ?? [];
   const pagination = data.pagination;
 
@@ -41,12 +43,23 @@ function ResourcesPage() {
     <main className="container mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold text-neutral-100 mb-6">Browse Tutorials</h1>
       <ResourceFilters />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {resources.map((resource) => (
-          <TutorialCard key={resource.id} resource={resource} />
-        ))}
-      </div>
-      {pagination && <ResourcePagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />}
+      {resources.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-24 text-center">
+          <p className="text-neutral-400 text-lg font-mono">No tutorials found</p>
+          {hasActiveFilters && (
+            <p className="text-neutral-600 text-sm font-mono mt-2">Try adjusting your filters or search term</p>
+          )}
+        </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {resources.map((resource) => (
+              <TutorialCard key={resource.id} resource={resource} />
+            ))}
+          </div>
+          {pagination && <ResourcePagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />}
+        </>
+      )}
     </main>
   );
 }

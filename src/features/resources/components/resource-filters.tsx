@@ -1,10 +1,11 @@
-import { useNavigate, useSearch } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
 import type { ResourcesSearch } from '@/features/resources/schemas/resources.schema';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { useRef } from 'react';
 import { X } from 'lucide-react';
+import { useResourceFilters } from '@/features/resources/hooks/use-resource-filters';
 
 const CODE_LANGS = [
   'HTML',
@@ -25,7 +26,7 @@ const CODE_LANGS = [
 
 export function ResourceFilters() {
   const navigate = useNavigate({ from: '/resources/' });
-  const { type, codeLang, search } = useSearch({ from: '/resources/' });
+  const { type, codeLang, search, hasActiveFilters } = useResourceFilters();
   const inputRef = useRef<HTMLInputElement>(null);
 
   function updateFilter(updates: Partial<ResourcesSearch>) {
@@ -36,8 +37,6 @@ export function ResourceFilters() {
     navigate({ search: { page: 1, limit: 6 } });
     if (inputRef.current) inputRef.current.value = '';
   }
-
-  const hasFilters = !!type || !!codeLang || !!search;
 
   return (
     <div className="flex  items-center justify-between mb-6">
@@ -105,7 +104,7 @@ export function ResourceFilters() {
           </SelectContent>
         </Select>
 
-        {hasFilters && (
+        {hasActiveFilters && (
           <Button
             variant="ghost"
             size="sm"
